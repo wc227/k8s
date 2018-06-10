@@ -6,9 +6,9 @@
 - 优化dashboard grafana等yaml配置
 - DNS双副本高可用
 
-# kubernetes离线包安装教程：
+## kubernetes离线包安装教程：
 ```
 1. master上： cd shell && sh init.sh && sh master.sh
 2. node上：cd shell && sh init.sh
-3. 在node上执行master输出的join命令即可 (命令忘记了可以用这个查看，kubeadm token create --print-join-command)
+3. 在node上执行master输出的join命令即可 (重建命令kubeadm token create --print-join-command)
 ```
