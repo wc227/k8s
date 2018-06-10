@@ -1,0 +1,7 @@
+apiVersion: kubeadm.k8s.io/v1alpha1
+kind: MasterConfiguration
+networking:
+  podSubnet: 10.244.0.0/16
+kubernetesVersion: v1.10.3
+featureGates:
+  CoreDNS: true
