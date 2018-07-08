@@ -110,3 +110,15 @@ kernel-lt:
 [root@k8s01 ~]# uname -a
 Linux k8s01 4.4.131-1.el7.elrepo.x86_64 #1 SMP Wed May 2 13:09:02 EDT 2018 x86_64 x86_64 x86_64 GNU/Linux
 ```
+## 查看可选的GRUB内核配置开机选单
+```
+awk -F\' '$1=="menuentry " {print i++ " : " $2}' /etc/grub2.cfg
+```
+## 下载离线内核包
+```
+yum --enablerepo=elrepo-kernel -y install --downloadonly --downloaddir=/yum_repo/centos/6/x86_64 kernel-ml
+```
+## 更新服务器索引
+```
+createrepo --update -v /yum_repo/centos/6/x86_64
+```
