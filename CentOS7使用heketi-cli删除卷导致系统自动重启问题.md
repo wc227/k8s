@@ -122,3 +122,20 @@ yum --enablerepo=elrepo-kernel -y install --downloadonly --downloaddir=/yum_repo
 ```
 createrepo --update -v /yum_repo/centos/6/x86_64
 ```
+进行内核的升级以后存在问题：
+
+系统盘在板载sata口上是可以正常启动新内核并且能识别面板硬盘
+系统盘插在面板口上新内核无法启动，调试发现无法找到系统盘
+系统盘插在面板上默认的3.10内核可以正常启动
+暂时的解决办法就是让系统插在板载的sata口上，因为当时没找到具体的解决办法，在这个问题持续了一段时间后，最近再次搜索资料的时候，把问题定位在了initramfs内的驱动的问题，并且对问题进行了解决
+```
+#lsinitrd -k 3.10.0-693.el7.x86_64|grep mpt[23]sas
+drwxr-xr-x   2 root     root            0 Apr 17 12:05 usr/lib/modules/3.10.0-693.el7.x86_64/kernel/drivers/scsi/mpt2sas
+-rw-r--r--   1 root     root       337793 Nov 20  2015 usr/lib/modules/3.10.0-693.el7.x86_64/kernel/drivers/scsi/mpt2sas/mpt2sas.ko
+```
+可以看到在3.10内核的时候是mpt2sas驱动
+## 强制加载驱动
+```
+dracut --force --add-drivers mpt3sas --kver=4.17.4-1.el7.elrepo.x86_64
+lsinitrd -k 4.17.4-1.el7.elrepo.x86_64|grep mpt[23] #验证
+```
