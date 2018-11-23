@@ -1,0 +1,12 @@
+#!/bin/bash
+#批量创建 gitlab 用户
+userinfo="userinfo.txt"
+while read line 
+do
+    password=`echo $line | awk '{print $1}'`
+    mail=`echo $line | awk '{print $2}'`
+    username=`echo $line | awk '{print $3}'`
+    name=`echo $line | awk '{print $4}'`
+    curl -d "password=$password&email=$mail&username=$username&name=$name&private_token=AH2zvaHy8txyWtUxMvyz" "http://172.20.5.36/api/v3/users"
+# v4接口调用失败，不得已切换为 v3 接口，如果有朋友用 v4 接口 ok 的话，请不吝赐教
+done <$userinfo
